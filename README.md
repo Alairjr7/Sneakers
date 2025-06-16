@@ -1,6 +1,7 @@
 # 🛍 Sneakers – Página de Produto de E-commerce
 
 Este projeto foi desenvolvido como um desafio da plataforma [Frontend Mentor](https://www.frontendmentor.io/challenges/ecommerce-product-page-UPsZ9MJp6), com o objetivo de criar uma página de produto moderna, responsiva e com boa experiência de usuário.
+
 🟢 Projeto Online: https://sneakers-wheat-nine.vercel.app/
 
 ## 📌 Objetivos principais:
