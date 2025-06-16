@@ -64,7 +64,7 @@ const Thumbnail = ({ Image, alt, isActive, onClick }) => {
   );
 };
 
-export default function home() {
+export default function Home() {
   const [link, setLink] = useState("Women");
   const handleLinkClick = (link) => setLink(link);
 
@@ -96,20 +96,54 @@ export default function home() {
     setAmount(amount - 1);
   };
 
+  useEffect(() => {
+    try {
+      const savedAmount = localStorage.getItem("amount");
+
+      if (savedAmount) {
+        setAmount(JSON.parse(savedAmount));
+      }
+    } catch (error) {
+      console.error("Erro ao carregar amount do localStorage", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("amount", JSON.stringify(amount));
+    } catch (error) {
+      console.error("Erro ao salvar amount no localStorage", error);
+    }
+  }, [amount]);
+
   const [cart, setCart] = useState([]);
+
+  useEffect(() => {
+    const cartLocalStorage = localStorage.getItem("cart");
+    setCart(cartLocalStorage ? JSON.parse(cartLocalStorage) : []);
+  }, []);
+
   const addProductToCart = () => {
     const product = {
       image: ImageProductThumbnail1,
       text: "tênis de edição limitada de outono",
       amount: amount,
     };
-    setCart((prevCart) => [...prevCart, product]);
+    setCart((prevCart) => {
+      const updatedCart = [...prevCart, product];
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      return updatedCart;
+    });
     setAmount(1);
   };
 
   const removeProductFromCart = (indexToRemove) => {
-    setCart((prevCart) =>
-      prevCart.filter((_, index) => index !== indexToRemove)
+    setCart((prevCart) =>{
+       const updatedCart = prevCart.filter((_, index) => index !== indexToRemove)
+       localStorage.setItem("cart", JSON.stringify(updatedCart))
+       return updatedCart;
+    }
+      
     );
   };
   const subtotalByProduct = cart.map((product) => 125 * product.amount);
@@ -132,34 +166,34 @@ export default function home() {
           className="bg-white max-w-[300px] w-full h-full outline-none p-8 absolute transition-all duration-500"
           overlayClassName="fixed inset-0  bg-black/75 "
         >
-          <img src={IconClose} onClick={() => setmodalMenu(false)}/>
+          <img src={IconClose} onClick={() => setmodalMenu(false)} />
           <nav className="mt-10">
             <ul className="flex flex-col gap-5">
-            <ListMobile
-              text="Coleções"
-              onClick={() => handleLinkClick("Collections")}
-              isActive={link === "Collections"}
-            />
-            <ListMobile
-              text="Homens"
-              onClick={() => handleLinkClick("Men")}
-              isActive={link === "Men"}
-            />
-            <ListMobile
-              text="Mulheres"
-              onClick={() => handleLinkClick("Women")}
-              isActive={link === "Women"}
-            />
-            <ListMobile
-              text="Sobre"
-              onClick={() => handleLinkClick("About")}
-              isActive={link === "About"}
-            />
-            <ListMobile
-              text="Contato"
-              onClick={() => handleLinkClick("Contact")}
-              isActive={link === "Contact"}
-            />
+              <ListMobile
+                text="Coleções"
+                onClick={() => handleLinkClick("Collections")}
+                isActive={link === "Collections"}
+              />
+              <ListMobile
+                text="Homens"
+                onClick={() => handleLinkClick("Men")}
+                isActive={link === "Men"}
+              />
+              <ListMobile
+                text="Mulheres"
+                onClick={() => handleLinkClick("Women")}
+                isActive={link === "Women"}
+              />
+              <ListMobile
+                text="Sobre"
+                onClick={() => handleLinkClick("About")}
+                isActive={link === "About"}
+              />
+              <ListMobile
+                text="Contato"
+                onClick={() => handleLinkClick("Contact")}
+                isActive={link === "Contact"}
+              />
             </ul>
           </nav>
         </Modal>
